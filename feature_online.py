@@ -7,10 +7,10 @@ online_train = pd.read_csv('data/ccf_online_stage1_train.csv',header=0,dtype=str
 online_train.columns = ['user_id','merchant_id','action','coupon_id','discount_rate','date_received','date']
 
 
-feature3 = online_train[((online_train.date>='20160415')&(online_train.date<='20160630'))|((pd.isnull(online_train.date))&(online_train.date_received>='20160415')&(online_train.date_received<='20160630'))]
-feature2 = online_train[(online_train.date>='20160301')&(online_train.date<='20160514')|((pd.isnull(online_train.date))&(online_train.date_received>='20160301')&(online_train.date_received<='20160514'))]
-feature1 = online_train[(online_train.date>='20160201')&(online_train.date<='20160413')|((pd.isnull(online_train.date))&(online_train.date_received>='20160201')&(online_train.date_received<='20160413'))]
-feature0 = online_train[((online_train.date>='20160101')&(online_train.date<='20160313'))|((pd.isnull(online_train.date))&(online_train.date_received>='20160101')&(online_train.date_received<='20160313'))]
+feature3 = online_train[((online_train.date>='20160401')&(online_train.date<='20160630'))|((pd.isnull(online_train.date))&(online_train.date_received>='20160401')&(online_train.date_received<='20160630'))]
+feature2 = online_train[(online_train.date>='20160301')&(online_train.date<='20160531')|((pd.isnull(online_train.date))&(online_train.date_received>='20160301')&(online_train.date_received<='20160531'))]
+feature1 = online_train[(online_train.date>='20160201')&(online_train.date<='20160430')|((pd.isnull(online_train.date))&(online_train.date_received>='20160201')&(online_train.date_received<='20160430'))]
+feature0 = online_train[((online_train.date>='20160101')&(online_train.date<='20160331'))|((pd.isnull(online_train.date))&(online_train.date_received>='20160101')&(online_train.date_received<='20160331'))]
 
 """
     t:线上成功消费次数

@@ -28,7 +28,7 @@ dataset012_x = dataset012.drop(['user_id','label','day_gap_before','day_gap_afte
 dataset3_preds = dataset3[['user_id','coupon_id','date_received']]
 dataset3_x = dataset3.drop(['user_id','coupon_id','date_received','day_gap_before','day_gap_after'],axis=1)
 
-print(dataset01_x.shape,dataset2_x.shape,dataset3_x.shape)
+print(dataset01_x.shape, dataset2_x.shape, dataset3_x.shape)
 
 dataset01 = xgb.DMatrix(dataset01_x,label=dataset01_y)
 dataset2 = xgb.DMatrix(dataset2_x,label=dataset2_y)
@@ -44,41 +44,41 @@ from sklearn.model_selection import GridSearchCV
 """
 param_test = {}
 
-#
-# params={'booster':'gbtree',
-# 	    'gamma':0.1,
-# 	    'min_child_weight':1.1,
-# 	    'max_depth':5,
-# 	    'lambda':10,
-# 	    'subsample':0.65,
-# 	    'colsample_bytree':0.65,
-# 	    'colsample_bylevel':0.65,
-# 	    'eta': 0.01,
-# 	    'tree_method':'exact',
-# 	    'seed':0,
-# 	    'nthread':12
-# 	    }
 
-# # train on dataset01, evaluate on dataset2
-# from sklearn.metrics import roc_auc_score
-# watchlist = [(dataset01,'train')]
-# model = xgb.train(params,dataset01,num_boost_round=2000,evals=watchlist)
-# preds = model.predict(dataset2)
-# preds = MinMaxScaler().fit_transform(preds.reshape(-1,1))
-# print(roc_auc_score(dataset2.get_label(),preds))
+params={'booster':'gbtree',
+	    'gamma':0.1,
+	    'min_child_weight':1.1,
+	    'max_depth':5,
+	    'lambda':10,
+	    'subsample':0.65,
+	    'colsample_bytree':0.65,
+	    'colsample_bylevel':0.65,
+	    'eta': 0.01,
+	    'tree_method':'exact',
+	    'seed':0,
+	    'nthread':12
+	    }
+
+# train on dataset01, evaluate on dataset2
+from sklearn.metrics import roc_auc_score
+watchlist = [(dataset01,'train')]
+model = xgb.train(params,dataset01,num_boost_round=2000,evals=watchlist)
+preds = model.predict(dataset2)
+preds = MinMaxScaler().fit_transform(preds.reshape(-1,1))
+print(roc_auc_score(dataset2.get_label(),preds))
 
 
-# # for submit
-# watchlist = [(dataset012,'train')]
-# model = xgb.train(params,dataset012,num_boost_round=2000,evals=watchlist)
-#
-# #predict test set
-# dataset3_preds['label'] = model.predict(dataset3)
-# dataset3_preds.label = MinMaxScaler().fit_transform(dataset3_preds.label.reshape(-1,1))
-# dataset3_preds.sort_values(by=['coupon_id','label'],inplace=True)
-# dataset3_preds.to_csv("xgb_preds.csv",index=None,header=None)
-# # print(dataset3_preds.info())
-#
+# for submit
+watchlist = [(dataset012,'train')]
+model = xgb.train(params,dataset012,num_boost_round=2000,evals=watchlist)
+
+#predict test set
+dataset3_preds['label'] = model.predict(dataset3)
+dataset3_preds.label = MinMaxScaler().fit_transform(dataset3_preds.label.reshape(-1,1))
+dataset3_preds.sort_values(by=['coupon_id','label'],inplace=True)
+dataset3_preds.to_csv("xgb_preds.csv",index=None,header=None)
+# print(dataset3_preds.info())
+
 # #
 # #save feature score
 # feature_score = model.get_fscore()

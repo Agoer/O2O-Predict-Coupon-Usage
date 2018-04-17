@@ -57,29 +57,29 @@ print(gsearch1.cv_results_)
 print(gsearch1.best_params_, gsearch1.best_score_)
 print(roc_auc_score(dataset2_y,gsearch1.predict_proba(dataset2_x)[:,1]))
 
-# ####for train
-# gbm0 = GradientBoostingClassifier(max_features='sqrt',
-#                                   learning_rate=0.1,
-#                                   subsample=0.8,
-#                                   random_state=10,
-#                                   n_estimators=100,
-#                                   min_samples_split=300,
-#                                   max_depth=13,
-#                                   min_samples_leaf=30
-# )
-# gbm0.fit(dataset01_x,dataset01_y)
-# y_predprob = gbm0.predict_proba(dataset2_x)[:,1]
-# print(roc_auc_score(dataset2_y,y_predprob))
+####for train
+gbm0 = GradientBoostingClassifier(max_features='sqrt',
+                                  learning_rate=0.1,
+                                  subsample=0.8,
+                                  random_state=10,
+                                  n_estimators=100,
+                                  min_samples_split=300,
+                                  max_depth=13,
+                                  min_samples_leaf=30
+)
+gbm0.fit(dataset01_x,dataset01_y)
+y_predprob = gbm0.predict_proba(dataset2_x)[:,1]
+print(roc_auc_score(dataset2_y,y_predprob))
 
 
-# #for submit
-# gbm0 = GradientBoostingClassifier(max_features='sqrt',
-#                                   learning_rate=0.1,
-#                                   min_samples_leaf=20,
-#                                   subsample=0.8,
-#                                   random_state=10,
-#                                   n_estimators=100)
-# gbm0.fit(dataset012_x,dataset012_y)
-# dataset3_preds['label'] = gbm0.predict_proba(dataset3_x)[:,1]
-# dataset3_preds.sort_values(by=['coupon_id','label'],inplace=True)
-# dataset3_preds.to_csv("gbdt_preds.csv",index=None,header=None)
+#for submit
+gbm0 = GradientBoostingClassifier(max_features='sqrt',
+                                  learning_rate=0.1,
+                                  min_samples_leaf=20,
+                                  subsample=0.8,
+                                  random_state=10,
+                                  n_estimators=100)
+gbm0.fit(dataset012_x,dataset012_y)
+dataset3_preds['label'] = gbm0.predict_proba(dataset3_x)[:,1]
+dataset3_preds.sort_values(by=['coupon_id','label'],inplace=True)
+dataset3_preds.to_csv("gbdt_preds.csv",index=None,header=None)

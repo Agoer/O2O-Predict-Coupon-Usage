@@ -46,24 +46,25 @@ dataset split:
 
 
 #1754884 record,1053282 with coupon_id,9738 coupon. date_received:20160101~20160615,date:20160101~20160630, 539438 users, 8415 merchants
-off_train = pd.read_csv('data/ccf_offline_stage1_train.csv',header=0,dtype=str)
-off_train.columns = ['user_id','merchant_id','coupon_id','discount_rate','distance','date_received','date']
+off_train = pd.read_csv('data/ccf_offline_stage1_train.csv', header=0, dtype=str)
+off_train.columns = ['user_id', 'merchant_id', 'coupon_id', 'discount_rate', 'distance', 'date_received', 'date']
 #2050 coupon_id. date_received:20160701~20160731, 76309 users(76307 in trainset, 35965 in online_trainset), 1559 merchants(1558 in trainset)
-off_test = pd.read_csv('data/ccf_offline_stage1_test_revised.csv',header=0,dtype=str)
-off_test.columns = ['user_id','merchant_id','coupon_id','discount_rate','distance','date_received']
+off_test = pd.read_csv('data/ccf_offline_stage1_test_revised.csv', header=0, dtype=str)
+off_test.columns = ['user_id', 'merchant_id', 'coupon_id', 'discount_rate', 'distance', 'date_received']
 #11429826 record(872357 with coupon_id),762858 user(267448 in off_train)
-on_train = pd.read_csv('data/ccf_online_stage1_train.csv',header=0,dtype=str)
-on_train.columns = ['user_id','merchant_id','action','coupon_id','discount_rate','date_received','date']
+on_train = pd.read_csv('data/ccf_online_stage1_train.csv', header=0, dtype=str)
+on_train.columns = ['user_id', 'merchant_id', 'action', 'coupon_id', 'discount_rate', 'date_received', 'date']
 
 
-dataset3 = off_test
-feature3 = off_train[((off_train.date>='20160415')&(off_train.date<='20160630'))|((pd.isnull(off_train.date))&(off_train.date_received>='20160415')&(off_train.date_received<='20160630'))]
-dataset2 = off_train[(off_train.date_received>='20160515')&(off_train.date_received<='20160615')]
-feature2 = off_train[(off_train.date>='20160301')&(off_train.date<='20160514')|((pd.isnull(off_train.date))&(off_train.date_received>='20160301')&(off_train.date_received<='20160514'))]
-dataset1 = off_train[(off_train.date_received>='20160414')&(off_train.date_received<='20160514')]
-feature1 = off_train[(off_train.date>='20160201')&(off_train.date<='20160413')|((pd.isnull(off_train.date))&(off_train.date_received>='20160201')&(off_train.date_received<='20160413'))]
-dataset0 = off_train[(off_train.date_received>='20160314')&(off_train.date_received<='20160414')]
-feature0 = off_train[((off_train.date>='20160101')&(off_train.date<='20160313'))|((pd.isnull(off_train.date))&(off_train.date_received>='20160101')&(off_train.date_received<='20160313'))]
+dataset3 = off_test  # (0701 - 0731)
+feature3 = \
+    off_train[((off_train.date>='20160401')&(off_train.date<='20160630'))|((pd.isnull(off_train.date))&(off_train.date_received>='20160401')&(off_train.date_received<='20160630'))]
+dataset2 = off_train[(off_train.date_received>='20160601')&(off_train.date_received<='20160630')]
+feature2 = off_train[(off_train.date>='20160301')&(off_train.date<='20160531')|((pd.isnull(off_train.date))&(off_train.date_received>='20160301')&(off_train.date_received<='20160531'))]
+dataset1 = off_train[(off_train.date_received>='20160501')&(off_train.date_received<='20160531')]
+feature1 = off_train[(off_train.date>='20160201')&(off_train.date<='20160430')|((pd.isnull(off_train.date))&(off_train.date_received>='20160201')&(off_train.date_received<='20160430'))]
+dataset0 = off_train[(off_train.date_received>='20160401')&(off_train.date_received<='20160430')]
+feature0 = off_train[((off_train.date>='20160101')&(off_train.date<='20160331'))|((pd.isnull(off_train.date))&(off_train.date_received>='20160101')&(off_train.date_received<='20160331'))]
 
 ############# other feature ##################3
 """
@@ -93,10 +94,10 @@ t2['receive_number'] = t2.date_received.apply(lambda s:len(s.split(':')))
 t2 = t2[t2.receive_number>1]
 t2['max_date_received'] = t2.date_received.apply(lambda s:max([int(d) for d in s.split(':')]))
 t2['min_date_received'] = t2.date_received.apply(lambda s:min([int(d) for d in s.split(':')]))
-t2 = t2[['user_id','coupon_id','max_date_received','min_date_received']]
+t2 = t2[['user_id', 'coupon_id', 'max_date_received', 'min_date_received']]
 
-t3 = dataset3[['user_id','coupon_id','date_received']]
-t3 = pd.merge(t3,t2,on=['user_id','coupon_id'],how='left')
+t3 = dataset3[['user_id', 'coupon_id', 'date_received']]
+t3 = pd.merge(t3, t2, on=['user_id', 'coupon_id'],how='left')
 t31 = t3.copy()
 t3['date_received'] = t3.date_received.astype(float)
 t3['this_month_user_receive_same_coupon_lastone'] = t3.max_date_received - t3.date_received

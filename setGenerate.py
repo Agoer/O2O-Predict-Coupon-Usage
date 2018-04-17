@@ -34,8 +34,8 @@ dataset3.user_merchant_received = dataset3.user_merchant_received.replace(np.nan
 # weekday_dummies = pd.get_dummies(dataset3.day_of_week)
 # weekday_dummies.columns = ['weekday'+str(i+1) for i in range(weekday_dummies.shape[1])]
 # dataset3 = pd.concat([dataset3,weekday_dummies],axis=1)
-dataset3.drop(['merchant_id','day_of_week','coupon_count'],axis=1,inplace=True)
-dataset3 = dataset3.replace('null',np.nan)
+dataset3.drop(['merchant_id','day_of_week','coupon_count'], axis=1, inplace=True)
+dataset3 = dataset3.replace('null', np.nan)
 print('train-dataset3',dataset3.shape)
 dataset3.to_csv('data/dataset3.csv',index=None)
 
